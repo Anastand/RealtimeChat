@@ -8,14 +8,9 @@ import { Server } from "socket.io";
 class socketService {
   // class allows to create new instance without writting the same code
   private _io: Server; // this _io is used to do handle realtime comms , is listens and broadcasts the message to everyone on the server
-  constructor() {
+  constructor(io: Server) {
     console.log("new server initailzied");
-    this._io = new Server({
-      cors: {
-        allowedHeaders: ["*"],
-        origin: "*",
-      },
-    });
+    this._io = io;
   }
 
   get io() {
