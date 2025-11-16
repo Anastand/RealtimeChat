@@ -1,6 +1,6 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
-import socketService from "./services/sokcet.js";
+import socketService from "./services/socket.ts";
 
 const PORT = process.env.PORT || 8080;
 const httpServer = createServer();

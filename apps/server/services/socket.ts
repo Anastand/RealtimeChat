@@ -3,7 +3,6 @@ import { Server } from "socket.io";
 /* 
   this file is used to initialize the socket io 
   _io --> instance variable 
-
 */
 
 class socketService {
@@ -11,10 +10,16 @@ class socketService {
   private _io: Server; // this _io is used to do handle realtime comms , is listens and broadcasts the message to everyone on the server
   constructor() {
     console.log("new server initailzied");
-    this._io = new Server();
+    this._io = new Server({
+      cors: {
+        allowedHeaders: ["*"],
+        origin: "*",
+      },
+    });
   }
 
-  get io() {// aslo a getter fucntion
+  get io() {
+    // aslo a getter fucntion
     // this is so that private vairabele _io can be accessed  outside , TODO: what more benifit is still unkonwn
     return this._io;
   }
