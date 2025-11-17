@@ -1,9 +1,14 @@
 import { Server } from "socket.io";
-
+import { Redis } from "ioredis";
+import { json } from "stream/consumers";
 /* 
   this file is used to initialize the socket io 
   _io --> instance variable 
 */
+const valredis_aiven_URl =
+  "rediss://default:AVNS_L4h1ca1mG9TQm_KgqlK@valkeyredis-7ab8ed8-knownindie-ab24.e.aivencloud.com:13056";
+const pub = new Redis(valredis_aiven_URl);
+const sub = new Redis(valredis_aiven_URl);
 
 class socketService {
   // class allows to create new instance without writting the same code
@@ -11,6 +16,7 @@ class socketService {
   constructor(io: Server) {
     console.log("new server initailzied");
     this._io = io;
+    sub.subscribe("message");
   }
 
   get io() {
@@ -28,14 +34,19 @@ class socketService {
       socket.on("event:message", async ({ message }: { message: String }) => {
         // now a event listener is esatblished for the uniqe connected client
         console.log(`New Message, ${message}`);
+        await pub.publish("message", JSON.stringify({ message }));
       });
+    });
+
+    sub.on("message", (channel, message) => {
+      if (channel == "message") {
+        io.emit("message", message );
+      }
     });
   }
 }
 /*
-  TODO : 1. get fronend here 
-  TODO : 2. add more comments to explain what was done
-  TODO : 3. 
+
   
 */
 

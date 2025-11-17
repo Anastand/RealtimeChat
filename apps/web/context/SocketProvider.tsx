@@ -12,6 +12,7 @@ interface socketProviderTypes {
 }
 interface socketContexInterface {
   sendMessage: (msg: string) => any; // this allows me to define a fucntion and its types
+  messages: string[];
 }
 const socketContex = createContext<socketContexInterface | null>(null);
 
@@ -27,6 +28,7 @@ export const useSocketState = () => {
 
 export const SocketProvider: React.FC<socketProviderTypes> = ({ children }) => {
   const [msgsocket, setmsgsocket] = useState<Socket>();
+  const [messages, setmessage] = useState<string[]>([]);
   /* msgsocket
  - holds the active Socket.IO client object.
  - This object lets you send (emit) and receive real-time messages to and from the backend server.
@@ -39,16 +41,25 @@ export const SocketProvider: React.FC<socketProviderTypes> = ({ children }) => {
     },
     [msgsocket]
   );
+
+  const onMessageReceive = useCallback((msg: string) => {
+    console.log(`from server msg: ${msg}`);
+    const { message } = JSON.parse(msg) as { message: string };
+    setmessage((prev) => [...prev, message]);
+  }, []);
   useEffect(() => {
     const _socket = io("http://localhost:8080"); // connect to backedn
+    _socket.on("message", onMessageReceive);
+    console.log("working");
     setmsgsocket(_socket); // hold the connection string so that it can be used
     return () => {
       _socket.disconnect();
+      _socket.off("message", onMessageReceive);
       setmsgsocket(undefined);
     };
   }, []);
   return (
-    <socketContex.Provider value={{ sendMessage }}>
+    <socketContex.Provider value={{ sendMessage, messages }}>
       {children}
     </socketContex.Provider>
   );

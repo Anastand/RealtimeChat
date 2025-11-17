@@ -3,7 +3,7 @@ import { useSocketState } from "@/context/SocketProvider";
 import { useState } from "react";
 
 export default function Home() {
-  const { sendMessage } = useSocketState(); // {} was used as we wanted to only import the sendMessage
+  const { sendMessage, messages } = useSocketState(); // {} was used as we wanted to only import the sendMessage
   const [message, setMessage] = useState("");
   return (
     <>
@@ -23,6 +23,11 @@ export default function Home() {
           >
             sendIcon
           </button>
+        </div>
+        <div className="flex justify-around mx-auto max-h-screen max-w-7xl mb-4 ">
+          {messages.map((e) => (
+            <li key={Math.random()}>{e}</li>
+          ))}
         </div>
       </div>
     </>
