@@ -1,6 +1,5 @@
 import { Server } from "socket.io";
 import { Redis } from "ioredis";
-import { json } from "stream/consumers";
 /* 
   this file is used to initialize the socket io 
   _io --> instance variable 
