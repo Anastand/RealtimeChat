@@ -1,6 +1,6 @@
 # RealtimeChat
 
-- the backend on render takes 60 sec to spin up , while I was making this I did not know if this so can't do anything about that next time i will try for microservice
+- the backend on render takes 60 sec to spin up , while I was making this I did not know about this so can't do anything about that next time i will try for microservice
 
 A full-stack real-time chat application using Next.js (frontend), Node.js + Socket.IO + Redis (backend), and Turborepo monorepo structure.  
 Deployable to Vercel (frontend) and Render (backend).
